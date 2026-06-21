@@ -10,7 +10,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table
+@Table(name="transactions",indexes = {
+        @Index(name="reference_id",columnList = "referenceNumber")
+})
 @Getter
 @Setter
 @AllArgsConstructor
