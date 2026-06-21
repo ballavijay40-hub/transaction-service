@@ -1,6 +1,6 @@
 package com.banking.microservice.transactionservice.enums;
 
-public enum TransactionTypes {
+public enum TransactionType {
     DEPOSIT,
     WITHDRAW,
     TRANSFER
