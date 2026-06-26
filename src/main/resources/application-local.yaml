@@ -1,7 +1,15 @@
 spring:
+  datasource:
+    url: jdbc:oracle:thin:@//localhost:1521/bank_pdb
+    username: transactions_user
+    password: transaction_123
+
 
 
   kafka:
+    topics:
+      transaction-request: transaction-requests
+      transaction-result: transaction-results
 
     bootstrap-servers:
       - localhost:9092
@@ -9,35 +17,22 @@ spring:
       - localhost:9094
 
     producer:
-
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-
       acks: all
-
       retries: 3
-
       properties:
-
         enable.idempotence: true
 
     consumer:
-
       group-id: transaction-group
-
       auto-offset-reset: earliest
-
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-
       properties:
-
         spring:
-
           json:
-
             trusted:
-
               packages: "*"
+  config:
+    import: "optional:configserver:"

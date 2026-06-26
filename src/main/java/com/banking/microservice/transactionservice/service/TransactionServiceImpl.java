@@ -9,12 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 
-public class TransactionServiceImpl implements TransactionService{
+public class TransactionServiceImpl{
 
-    @Override
-    public TransactionResponse deposit(DepositRequest dto){
 
-    }
 
 
 }

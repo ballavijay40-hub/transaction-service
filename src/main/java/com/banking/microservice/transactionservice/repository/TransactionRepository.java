@@ -21,11 +21,11 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
 
     boolean existsByReferenceNumber(String referenceNumber);
 
-    Page<Transaction> findBYAromAccountIdOrToAccountId(Long fromAccountId, Long toAccountId, Pageable pageable);
+    Page<Transaction> findByFromAccountIdOrToAccountId(Long fromAccountId, Long toAccountId, Pageable pageable);
 
-    Page<Transaction> findByTransactionTtype(TransactionType type,Pageable pageable);
+    Page<Transaction> findByType(TransactionType type,Pageable pageable);
 
-    Page<Transaction> findByTransactionStatus(TransactionStatus status,Pageable pageable);
+    Page<Transaction> findByStatus(TransactionStatus status,Pageable pageable);
 
     Page<Transaction> findByCreatedAt(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
@@ -41,7 +41,8 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
     Page<Transaction> findAccountTransactionsBetweenDates(
             @Param("accountId") Long accountId,
             @Param("startDate") LocalDateTime startDate,
-            @Param("endDate") LocalDateTime endDate
+            @Param("endDate") LocalDateTime endDate,
+            Pageable pageable
     );
 
 
