@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public interface TransactionRepository extends JpaRepository<Transaction,Long> {
 
-    Optional<TransactionResponse> findByReferenceNumber(String referenceNUmber);
+    Optional<Transaction> findByReferenceNumber(String referenceNUmber);
 
     boolean existsByReferenceNumber(String referenceNumber);
 

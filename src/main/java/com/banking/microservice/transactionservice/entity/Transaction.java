@@ -34,7 +34,7 @@ public class Transaction {
     private Long toAccountId;
 
     @Column(nullable = false,precision=19,scale=2)
-    private BigDecimal ammount;
+    private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable=false,length=25)
