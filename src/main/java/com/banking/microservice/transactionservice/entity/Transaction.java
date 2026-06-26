@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="transactions",indexes = {
-        @Index(name="reference_id",columnList = "referenceNumber")
+        @Index(name="idx_reference_id",columnList = "reference_id")
 })
 @Getter
 @Setter
@@ -42,13 +42,16 @@ public class Transaction {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable=false,length=25)
-    private TransactionStatus status;
+    @Builder.Default
+    private TransactionStatus status=TransactionStatus.PENDING;
 
-    
+    @Column(length=255)
     private String description;
 
     @Column(nullable = false,updatable = false,name="created_at")
     private LocalDateTime createdAt;
+    @Column(name="failure_reason",length = 255)
+    private String failureReason;
 
     @PrePersist
    public void onCreate(){
