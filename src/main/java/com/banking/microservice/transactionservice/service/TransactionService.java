@@ -5,6 +5,7 @@ import com.banking.microservice.transactionservice.dto.TransactionResponse;
 import com.banking.microservice.transactionservice.dto.TransferRequest;
 import com.banking.microservice.transactionservice.dto.WithdrawRequest;
 
+import com.banking.microservice.transactionservice.event.TransactionResultEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,4 +20,6 @@ public interface TransactionService {
     Page<TransactionResponse> getTransactionHistory(Long accountId, Pageable pageable);
 
     TransactionResponse getTransactionByReference(String referenceNumber);
+
+    void transactionProcess(TransactionResultEvent transactionResultEvent);
 }

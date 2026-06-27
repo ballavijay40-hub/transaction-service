@@ -8,9 +8,11 @@ import com.banking.microservice.transactionservice.entity.Transaction;
 import com.banking.microservice.transactionservice.enums.TransactionStatus;
 import com.banking.microservice.transactionservice.enums.TransactionType;
 import com.banking.microservice.transactionservice.event.TransactionRequestEvent;
+import com.banking.microservice.transactionservice.event.TransactionResultEvent;
 import com.banking.microservice.transactionservice.producer.TransactionProducer;
 import com.banking.microservice.transactionservice.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TransactionServiceImpl implements TransactionService{
 
     private final TransactionRepository transactionRepository;
@@ -90,6 +93,27 @@ public class TransactionServiceImpl implements TransactionService{
     public Page<TransactionResponse> getTransactionHistory(Long accountId, Pageable pageable){
         return  transactionRepository.findByFromAccountIdOrToAccountId(accountId,accountId,pageable)
                 .map(this::mapToResponse);
+    }
+
+
+
+    @Override
+    public void transactionProcess(TransactionResultEvent transactionResultEvent){
+        Transaction transaction=transactionRepository.findByReferenceNumber(transactionResultEvent.getReferenceNumber())
+                .orElseThrow(()->new RuntimeException("transaction not found "+transactionResultEvent.getReferenceNumber()));
+
+        if(transaction.getStatus()!=TransactionStatus.PENDING){
+            log.warn("Transaction {} already processed.",transaction.getReferenceNumber());
+            return;
+
+        }
+
+        transaction.setStatus(transactionResultEvent.getStatus());
+        transaction.setFailureReason(transactionResultEvent.getFailureReason());
+
+        transactionRepository.save(transaction);
+
+        log.info("transaction {} updated to {}.",transaction.getReferenceNumber(),transaction.getStatus());
     }
 
 
